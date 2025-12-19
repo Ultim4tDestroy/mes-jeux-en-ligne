@@ -7,8 +7,8 @@
     <style>
         body { background-color: #1a1a1a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 10px; min-height: 100vh; box-sizing: border-box; }
         
-        /* Bouton retour discret */
-        .btn-home { position: absolute; top: 15px; left: 15px; background: #444; color: white; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; z-index: 100; }
+        /* Bouton retour avec uniquement l'émoji */
+        .btn-home { position: absolute; top: 15px; left: 15px; background: #444; color: white; text-decoration: none; padding: 10px; border-radius: 50%; font-size: 1.2rem; z-index: 100; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; }
 
         h1 { font-size: 2.2rem; margin: 10px 0; color: #00d4ff; letter-spacing: 5px; }
         #message { height: 35px; color: #00d4ff; font-weight: bold; font-size: 1.1rem; }
@@ -21,10 +21,13 @@
         .present { background-color: #f1c40f; border-color: #f1c40f; border-radius: 50%; }
         .absent { background-color: #34495e; border-color: #34495e; }
 
+        /* Style pour les touches désactivées */
+        .key.key-disabled { opacity: 0.2; pointer-events: none; background-color: #222; }
+
         .keyboard { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 500px; margin-top: auto; padding-bottom: 10px; }
         .kb-row { display: flex; justify-content: center; gap: 6px; }
-        .key { background: #444; border: none; color: white; padding: 18px 0; border-radius: 8px; font-weight: bold; font-size: 1.2rem; cursor: pointer; flex: 1; min-width: 32px; touch-action: manipulation; }
-        .key-wide { flex: 2.5; background: #00d4ff; color: #1a1a1a; font-size: 1rem; }
+        .key { background: #444; border: none; color: white; padding: 18px 0; border-radius: 8px; font-weight: bold; font-size: 1.2rem; cursor: pointer; flex: 1; min-width: 32px; touch-action: manipulation; transition: 0.2s; }
+        .key-wide { flex: 2.5; background: #00d4ff; color: #1a1a1a; font-size: 0.9rem; }
 
         #result-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); flex-direction:column; align-items:center; justify-content:center; z-index:200; text-align: center; }
         .result-card { background:#2c3e50; padding:40px; border-radius:20px; border:2px solid #00d4ff; box-shadow: 0 0 20px #00d4ff55; }
@@ -39,14 +42,14 @@
 
     <div class="keyboard">
         <div class="kb-row">
-            <button class="key" onclick="addLetter('A')">A</button><button class="key" onclick="addLetter('Z')">Z</button><button class="key" onclick="addLetter('E')">E</button><button class="key" onclick="addLetter('R')">R</button><button class="key" onclick="addLetter('T')">T</button><button class="key" onclick="addLetter('Y')">Y</button><button class="key" onclick="addLetter('U')">U</button><button class="key" onclick="addLetter('I')">I</button><button class="key" onclick="addLetter('O')">O</button><button class="key" onclick="addLetter('P')">P</button>
+            <button class="key" id="key-A" onclick="addLetter('A')">A</button><button class="key" id="key-Z" onclick="addLetter('Z')">Z</button><button class="key" id="key-E" onclick="addLetter('E')">E</button><button class="key" id="key-R" onclick="addLetter('R')">R</button><button class="key" id="key-T" onclick="addLetter('T')">T</button><button class="key" id="key-Y" onclick="addLetter('Y')">Y</button><button class="key" id="key-U" onclick="addLetter('U')">U</button><button class="key" id="key-I" onclick="addLetter('I')">I</button><button class="key" id="key-O" onclick="addLetter('O')">O</button><button class="key" id="key-P" onclick="addLetter('P')">P</button>
         </div>
         <div class="kb-row">
-            <button class="key" onclick="addLetter('Q')">Q</button><button class="key" onclick="addLetter('S')">S</button><button class="key" onclick="addLetter('D')">D</button><button class="key" onclick="addLetter('F')">F</button><button class="key" onclick="addLetter('G')">G</button><button class="key" onclick="addLetter('H')">H</button><button class="key" onclick="addLetter('J')">J</button><button class="key" onclick="addLetter('K')">K</button><button class="key" onclick="addLetter('L')">L</button><button class="key" onclick="addLetter('M')">M</button>
+            <button class="key" id="key-Q" onclick="addLetter('Q')">Q</button><button class="key" id="key-S" onclick="addLetter('S')">S</button><button class="key" id="key-D" onclick="addLetter('D')">D</button><button class="key" id="key-F" onclick="addLetter('F')">F</button><button class="key" id="key-G" onclick="addLetter('G')">G</button><button class="key" id="key-H" onclick="addLetter('H')">H</button><button class="key" id="key-J" onclick="addLetter('J')">J</button><button class="key" id="key-K" onclick="addLetter('K')">K</button><button class="key" id="key-L" onclick="addLetter('L')">L</button><button class="key" id="key-M" onclick="addLetter('M')">M</button>
         </div>
         <div class="kb-row">
-            <button class="key" onclick="addLetter('W')">W</button><button class="key" onclick="addLetter('X')">X</button><button class="key" onclick="addLetter('C')">C</button><button class="key" onclick="addLetter('V')">V</button><button class="key" onclick="addLetter('B')">B</button><button class="key" onclick="addLetter('N')">N</button>
-            <button class="key key-wide" onclick="deleteLetter()">EFFACER</button>
+            <button class="key" id="key-W" onclick="addLetter('W')">W</button><button class="key" id="key-X" onclick="addLetter('X')">X</button><button class="key" id="key-C" onclick="addLetter('C')">C</button><button class="key" id="key-V" onclick="addLetter('V')">V</button><button class="key" id="key-B" onclick="addLetter('B')">B</button><button class="key" id="key-N" onclick="addLetter('N')">N</button>
+            <button class="key key-wide" onclick="deleteLetter()">⌫</button>
             <button class="key key-wide" onclick="submitGuess()">ENTRER</button>
         </div>
     </div>
@@ -55,7 +58,7 @@
         <div class="result-card">
             <h2 id="result-title" style="font-size: 2.5rem; margin: 0;"></h2>
             <p id="result-text" style="font-size: 1.2rem; margin: 20px 0;"></p>
-            <a href="index.html" class="btn-menu">RETOUR AU MENU</a>
+            <a href="index.html" class="btn-menu">🏠 ACCUEIL</a>
         </div>
     </div>
 
@@ -70,6 +73,7 @@
         let currentGuess = "";
         let currentAttempt = 0;
         let isGameOver = false;
+        let discoveredLetters = {}; // Stocke l'état des lettres (correct, present, absent)
 
         for (let i = 0; i < 6; i++) {
             const row = document.createElement('div'); row.className = 'row';
@@ -112,22 +116,46 @@
         function checkGuess(guess) {
             const row = grid.children[currentAttempt];
             const targetArr = targetWord.split('');
+            
+            // 1ere passe : Lettres correctes
             for (let i = 0; i < 5; i++) {
                 row.children[i].innerText = guess[i];
                 if (guess[i] === targetWord[i]) {
                     row.children[i].classList.add('correct');
                     targetArr[i] = null;
+                    discoveredLetters[guess[i]] = 'correct';
                 }
             }
+            
+            // 2eme passe : Presentes ou Absentes
             for (let i = 0; i < 5; i++) {
                 if (!row.children[i].classList.contains('correct')) {
                     const idx = targetArr.indexOf(guess[i]);
-                    if (idx !== -1) { row.children[i].classList.add('present'); targetArr[idx] = null; }
-                    else { row.children[i].classList.add('absent'); }
+                    if (idx !== -1) { 
+                        row.children[i].classList.add('present'); 
+                        targetArr[idx] = null;
+                        if (discoveredLetters[guess[i]] !== 'correct') discoveredLetters[guess[i]] = 'present';
+                    } else { 
+                        row.children[i].classList.add('absent'); 
+                        if (!discoveredLetters[guess[i]]) discoveredLetters[guess[i]] = 'absent';
+                    }
                 }
             }
+
+            // Mise à jour visuelle du clavier
+            updateKeyboardUI();
+
             if (guess === targetWord) showEndScreen(true);
             else if (currentAttempt === 5) showEndScreen(false);
+        }
+
+        function updateKeyboardUI() {
+            for (let letter in discoveredLetters) {
+                const keyBtn = document.getElementById(`key-${letter}`);
+                if (keyBtn && discoveredLetters[letter] === 'absent') {
+                    keyBtn.classList.add('key-disabled');
+                }
+            }
         }
 
         function showEndScreen(win) {
@@ -139,5 +167,3 @@
     </script>
 </body>
 </html>
-
-
